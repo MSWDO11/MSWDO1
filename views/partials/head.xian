@@ -7,20 +7,45 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    /* Sidebar overlay for mobile */
+    #sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 15;
+    }
+    #sidebar-overlay.active { display: block; }
   </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
 
+  <!-- Sidebar overlay (mobile tap-to-close) -->
+  <div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
   <!-- Flash Messages -->
   {{#if success_msg}}
-  <div id="flash-success" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-green-100 border border-green-400 text-green-800 px-6 py-3 rounded-lg shadow-md text-sm flex items-center gap-2">
-    <span>✅</span> <span>{{ success_msg }}</span>
-    <button onclick="document.getElementById('flash-success').remove()" class="ml-4 font-bold text-green-600 hover:text-green-900">&times;</button>
+  <div id="flash-success" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-sm bg-green-100 border border-green-400 text-green-800 px-4 py-3 rounded-xl shadow-lg text-sm flex items-center gap-2">
+    <svg class="w-4 h-4 text-green-600 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span class="flex-1">{{ success_msg }}</span>
+    <button onclick="document.getElementById('flash-success').remove()" class="ml-2 font-bold text-green-600 hover:text-green-900 flex-shrink-0">&times;</button>
   </div>
   {{/if}}
   {{#if error_msg}}
-  <div id="flash-error" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 bg-red-100 border border-red-400 text-red-800 px-6 py-3 rounded-lg shadow-md text-sm flex items-center gap-2">
-    <span>❌</span> <span>{{ error_msg }}</span>
-    <button onclick="document.getElementById('flash-error').remove()" class="ml-4 font-bold text-red-600 hover:text-red-900">&times;</button>
+  <div id="flash-error" class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-sm bg-red-100 border border-red-400 text-red-800 px-4 py-3 rounded-xl shadow-lg text-sm flex items-center gap-2">
+    <svg class="w-4 h-4 text-red-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    <span class="flex-1">{{ error_msg }}</span>
+    <button onclick="document.getElementById('flash-error').remove()" class="ml-2 font-bold text-red-600 hover:text-red-900 flex-shrink-0">&times;</button>
   </div>
   {{/if}}
+
+  <script>
+    function openSidebar() {
+      document.getElementById('sidebar').classList.remove('-translate-x-full');
+      document.getElementById('sidebar-overlay').classList.add('active');
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.add('-translate-x-full');
+      document.getElementById('sidebar-overlay').classList.remove('active');
+    }
+  </script>

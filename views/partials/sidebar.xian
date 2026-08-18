@@ -1,7 +1,7 @@
-<aside class="w-64 bg-slate-900 text-white flex flex-col fixed top-0 left-0 h-full z-20 shadow-2xl">
+<aside id="sidebar" class="w-64 bg-slate-900 text-white flex flex-col fixed top-0 left-0 h-full z-20 shadow-2xl transition-transform duration-300 -translate-x-full md:translate-x-0">
 
   <!-- Brand -->
-  <div class="px-5 py-5 border-b border-slate-700/60">
+  <div class="px-5 py-5 border-b border-slate-700/60 flex items-center justify-between">
     <div class="flex items-center gap-3">
       <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg">
         <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -15,6 +15,10 @@
         </p>
       </div>
     </div>
+    <!-- Close button — mobile only -->
+    <button onclick="closeSidebar()" class="md:hidden text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-700 transition">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
   </div>
 
   <!-- User Info -->
