@@ -50,13 +50,35 @@ import {
   updatePasswordHandler
 } from "../controllers/adminController.js";
 
-// Admin routes (all protected inside controller via requireAdmin)
-router.get("/admin/reports",                    reportsPage);
-router.get("/admin/users",                      allUsersPage);
-router.get("/admin/cases",                      allCasesPage);
-router.post("/admin/cases/:id/status",          updateCaseStatus);
-router.get("/admin/settings",                   settingsPage);
-router.post("/admin/settings/profile",          updateProfile);
-router.post("/admin/settings/password",         updatePasswordHandler);
+// Admin routes
+router.get("/admin/reports",               reportsPage);
+router.get("/admin/users",                 allUsersPage);
+router.get("/admin/cases",                 allCasesPage);
+router.post("/admin/cases/:id/status",     updateCaseStatus);
+router.get("/admin/settings",              settingsPage);
+router.post("/admin/settings/profile",     updateProfile);
+router.post("/admin/settings/password",    updatePasswordHandler);
+
+import {
+  applyPage,
+  submitApplication,
+  myCasesPage,
+} from "../controllers/citizenController.js";
+
+// Citizen routes
+router.get("/apply",     applyPage);
+router.post("/apply",    submitApplication);
+router.get("/my-cases",  myCasesPage);
+
+import {
+  staffCasesPage,
+  staffUpdateCaseStatus,
+  beneficiariesPage,
+} from "../controllers/staffController.js";
+
+// Staff routes
+router.get("/staff/cases",                  staffCasesPage);
+router.post("/staff/cases/:id/status",      staffUpdateCaseStatus);
+router.get("/staff/beneficiaries",          beneficiariesPage);
 
 export default router;

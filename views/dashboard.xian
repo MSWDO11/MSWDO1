@@ -149,20 +149,35 @@
           <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
           </div>
-          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Open Cases</p></div>
+          <div><p class="text-2xl font-bold text-slate-800">{{ stats.openCases }}</p><p class="text-xs text-slate-500">Open Cases</p></div>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
           <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">For Review</p></div>
+          <div><p class="text-2xl font-bold text-slate-800">{{ stats.reviewCases }}</p><p class="text-xs text-slate-500">For Review</p></div>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
           <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Resolved</p></div>
+          <div><p class="text-2xl font-bold text-slate-800">{{ stats.resolvedCases }}</p><p class="text-xs text-slate-500">Resolved</p></div>
         </div>
+      </div>
+      <!-- Staff Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <a href="/staff/cases" class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl p-5 flex items-center gap-4 hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/20 group">
+          <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+          </div>
+          <div><p class="font-semibold text-sm">Manage Cases</p><p class="text-xs text-blue-200 mt-0.5">Review pending applications</p></div>
+        </a>
+        <a href="/staff/beneficiaries" class="bg-white border border-slate-200 rounded-2xl p-5 flex items-center gap-4 hover:shadow-md transition-all group">
+          <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center group-hover:bg-emerald-100 transition">
+            <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          </div>
+          <div><p class="font-semibold text-sm text-slate-800">Beneficiaries</p><p class="text-xs text-slate-400 mt-0.5">View registered citizens</p></div>
+        </a>
       </div>
       {{/if}}
 
@@ -173,20 +188,35 @@
           <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
           </div>
-          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Submitted</p></div>
+          <div><p class="text-2xl font-bold text-slate-800">{{ stats.totalSubmitted }}</p><p class="text-xs text-slate-500">Submitted</p></div>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
           <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Pending Review</p></div>
+          <div><p class="text-2xl font-bold text-slate-800">{{ stats.pendingCases }}</p><p class="text-xs text-slate-500">Pending Review</p></div>
         </div>
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
           <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
             <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           </div>
-          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Approved</p></div>
+          <div><p class="text-2xl font-bold text-slate-800">{{ stats.approvedCases }}</p><p class="text-xs text-slate-500">Approved</p></div>
         </div>
+      </div>
+      <!-- Citizen Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <a href="/apply" class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl p-5 flex items-center gap-4 hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/20 group">
+          <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+          </div>
+          <div><p class="font-semibold text-sm">New Application</p><p class="text-xs text-blue-200 mt-0.5">Apply for assistance</p></div>
+        </a>
+        <a href="/my-cases" class="bg-white border border-slate-200 rounded-2xl p-5 flex items-center gap-4 hover:shadow-md transition-all group">
+          <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center group-hover:bg-blue-100 transition">
+            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div><p class="font-semibold text-sm text-slate-800">My Applications</p><p class="text-xs text-slate-400 mt-0.5">Track your requests</p></div>
+        </a>
       </div>
       {{/if}}
 

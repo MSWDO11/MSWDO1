@@ -13,7 +13,7 @@ import {
   sendPasswordResetEmail,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc, getDoc, collection, getDocs } from "firebase/firestore";
+import { doc, setDoc, getDoc, collection, getDocs, query, where } from "firebase/firestore";
 
 const fmt = (val) => {
   if (!val) return "—";
@@ -56,10 +56,11 @@ export const dashboardPage = async (req, res) => {
 
     const user = userDoc.data();
 
-    // For admin dashboard: load stats + recent users
     let stats = {};
     let recentUsers = [];
+
     if (user.role === "admin") {
+      // ── Admin: full portal stats + recent users ──────────────────────────
       const usersSnap = await getDocs(collection(db, "users"));
       const allUsers  = usersSnap.docs.map(d => ({ uid: d.id, ...d.data() }));
       const casesSnap = await getDocs(collection(db, "cases"));
@@ -79,7 +80,37 @@ export const dashboardPage = async (req, res) => {
           return db_ - da;
         })
         .slice(0, 5)
-        .map(u => ({ ...u, createdAtFormatted: fmt(u.createdAt) }));
+        .map(u => ({
+          ...u,
+          initials: getInitials(u.fullName),
+          createdAtFormatted: fmt(u.createdAt)
+        }));
+
+    } else if (user.role === "staff") {
+      // ── Staff: case workload stats ───────────────────────────────────────
+      const casesSnap = await getDocs(collection(db, "cases"));
+      const allCases  = casesSnap.docs.map(d => d.data());
+
+      stats = {
+        openCases:     allCases.filter(c => c.status === "pending" || c.status === "review").length,
+        reviewCases:   allCases.filter(c => c.status === "review").length,
+        resolvedCases: allCases.filter(c => c.status === "approved" || c.status === "rejected").length,
+      };
+
+    } else if (user.role === "citizen") {
+      // ── Citizen: own application stats ──────────────────────────────────
+      const q = query(
+        collection(db, "cases"),
+        where("applicantUid", "==", req.session.userId)
+      );
+      const casesSnap = await getDocs(q);
+      const myCases   = casesSnap.docs.map(d => d.data());
+
+      stats = {
+        totalSubmitted: myCases.length,
+        pendingCases:   myCases.filter(c => c.status === "pending").length,
+        approvedCases:  myCases.filter(c => c.status === "approved").length,
+      };
     }
 
     res.render("dashboard", {
