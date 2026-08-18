@@ -1,0 +1,130 @@
+{{> head}}
+<div class="flex min-h-screen bg-slate-50">
+  {{> sidebar}}
+
+  <main class="flex-1 ml-64 min-h-screen">
+
+    <!-- Top Bar -->
+    <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+      <div>
+        <h1 class="text-lg font-bold text-slate-800">All Cases</h1>
+        <p class="text-xs text-slate-400 mt-0.5">Manage all submitted assistance applications</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="bg-violet-50 text-violet-700 text-xs font-bold px-3 py-1.5 rounded-full border border-violet-100">{{ totalCases }} cases</span>
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center text-xs font-bold text-white">{{ initials }}</div>
+      </div>
+    </header>
+
+    <div class="p-8 space-y-6">
+
+      <!-- Status Summary Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        <a href="/admin/cases" class="bg-white rounded-2xl border {{#if (eq activeFilter 'all')}}border-slate-800 shadow-md{{else}}border-slate-200 hover:border-slate-300 shadow-sm{{/if}} p-4 text-center transition-all">
+          <p class="text-xl font-extrabold text-slate-800">{{ totalCases }}</p>
+          <p class="text-xs text-slate-500 mt-0.5">All</p>
+        </a>
+        <a href="/admin/cases?status=pending" class="bg-white rounded-2xl border {{#if (eq activeFilter 'pending')}}border-amber-500 shadow-md{{else}}border-slate-200 hover:border-slate-300 shadow-sm{{/if}} p-4 text-center transition-all">
+          <p class="text-xl font-extrabold text-amber-600">{{ pendingCount }}</p>
+          <p class="text-xs text-slate-500 mt-0.5">Pending</p>
+        </a>
+        <a href="/admin/cases?status=review" class="bg-white rounded-2xl border {{#if (eq activeFilter 'review')}}border-blue-500 shadow-md{{else}}border-slate-200 hover:border-slate-300 shadow-sm{{/if}} p-4 text-center transition-all">
+          <p class="text-xl font-extrabold text-blue-600">{{ reviewCount }}</p>
+          <p class="text-xs text-slate-500 mt-0.5">Under Review</p>
+        </a>
+        <a href="/admin/cases?status=approved" class="bg-white rounded-2xl border {{#if (eq activeFilter 'approved')}}border-emerald-500 shadow-md{{else}}border-slate-200 hover:border-slate-300 shadow-sm{{/if}} p-4 text-center transition-all">
+          <p class="text-xl font-extrabold text-emerald-600">{{ approvedCount }}</p>
+          <p class="text-xs text-slate-500 mt-0.5">Approved</p>
+        </a>
+        <a href="/admin/cases?status=rejected" class="bg-white rounded-2xl border {{#if (eq activeFilter 'rejected')}}border-red-500 shadow-md{{else}}border-slate-200 hover:border-slate-300 shadow-sm{{/if}} p-4 text-center transition-all">
+          <p class="text-xl font-extrabold text-red-600">{{ rejectedCount }}</p>
+          <p class="text-xs text-slate-500 mt-0.5">Rejected</p>
+        </a>
+      </div>
+
+      <!-- Table -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-bold text-slate-800">
+            {{#if (eq activeFilter 'all')}}All Applications
+            {{else if (eq activeFilter 'pending')}}Pending Applications
+            {{else if (eq activeFilter 'review')}}Under Review
+            {{else if (eq activeFilter 'approved')}}Approved Applications
+            {{else}}Rejected Applications{{/if}}
+          </h3>
+          <span class="text-xs text-slate-400">{{ totalCases }} result{{#if (eq totalCases 1)}}{{else}}s{{/if}}</span>
+        </div>
+
+        {{#if cases.length}}
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="bg-slate-50 border-b border-slate-100">
+                <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide w-10">#</th>
+                <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Applicant</th>
+                <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Type of Assistance</th>
+                <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Status</th>
+                <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Submitted</th>
+                <th class="px-6 py-3.5 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Update</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              {{#each cases}}
+              <tr class="hover:bg-slate-50/80 transition-colors">
+                <td class="px-6 py-4 text-slate-400 text-xs font-medium">{{ this.index }}</td>
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-400 to-purple-600 flex items-center justify-center text-white text-xs font-bold flex-shrink-0 shadow-sm">
+                      {{ this.applicantInitials }}
+                    </div>
+                    <span class="font-semibold text-slate-800">{{ this.applicantName }}</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4">
+                  <span class="text-slate-600">{{ this.assistanceType }}</span>
+                </td>
+                <td class="px-6 py-4">
+                  {{#if (eq this.status "pending")}}<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-100"><span class="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>Pending</span>
+                  {{else if (eq this.status "review")}}<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100"><span class="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>Under Review</span>
+                  {{else if (eq this.status "approved")}}<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-100"><span class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>Approved</span>
+                  {{else if (eq this.status "rejected")}}<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-100"><span class="w-1.5 h-1.5 bg-red-500 rounded-full"></span>Rejected</span>
+                  {{else}}<span class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">{{ this.status }}</span>{{/if}}
+                </td>
+                <td class="px-6 py-4">
+                  <p class="text-slate-600 text-xs font-medium">{{ this.createdAtFormatted }}</p>
+                </td>
+                <td class="px-6 py-4">
+                  <form method="POST" action="/admin/cases/{{ this.id }}/status" class="flex items-center gap-2">
+                    <select name="status"
+                      class="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition cursor-pointer">
+                      <option value="pending"  {{#if (eq this.status "pending")}}selected{{/if}}>Pending</option>
+                      <option value="review"   {{#if (eq this.status "review")}}selected{{/if}}>Under Review</option>
+                      <option value="approved" {{#if (eq this.status "approved")}}selected{{/if}}>Approved</option>
+                      <option value="rejected" {{#if (eq this.status "rejected")}}selected{{/if}}>Rejected</option>
+                    </select>
+                    <button type="submit"
+                      class="text-xs bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg font-semibold transition shadow-sm shadow-blue-200">
+                      Save
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        {{else}}
+        <div class="py-20 text-center">
+          <div class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+          </div>
+          <p class="text-slate-500 font-semibold text-sm">No cases found</p>
+          <p class="text-slate-400 text-xs mt-1">Cases will appear here once citizens submit applications.</p>
+        </div>
+        {{/if}}
+      </div>
+
+    </div>
+  </main>
+</div>
+{{> footer}}

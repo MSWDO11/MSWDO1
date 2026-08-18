@@ -1,0 +1,200 @@
+{{> head}}
+<div class="flex min-h-screen bg-slate-50">
+  {{> sidebar}}
+
+  <main class="flex-1 ml-64 min-h-screen">
+
+    <!-- Top Bar -->
+    <header class="bg-white border-b border-slate-200 px-8 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
+      <div>
+        <h1 class="text-lg font-bold text-slate-800">
+          {{#if (eq user.role "admin")}}Admin Dashboard{{else if (eq user.role "staff")}}Staff Dashboard{{else}}My Dashboard{{/if}}
+        </h1>
+        <p class="text-xs text-slate-400 mt-0.5">Welcome back, {{ user.fullName }}</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-xs text-slate-400" id="currentDate"></span>
+        <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center text-xs font-bold text-white">
+          {{ initials }}
+        </div>
+      </div>
+    </header>
+
+    <div class="p-8">
+
+      <!-- ── ADMIN VIEW ─────────────────────────────────────── -->
+      {{#if (eq user.role "admin")}}
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-slate-800">{{ stats.totalUsers }}</p>
+            <p class="text-xs text-slate-500 mt-0.5">Total Users</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-violet-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-slate-800">{{ stats.totalCases }}</p>
+            <p class="text-xs text-slate-500 mt-0.5">Total Cases</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-slate-800">{{ stats.pendingCases }}</p>
+            <p class="text-xs text-slate-500 mt-0.5">Pending Cases</p>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4 hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div>
+            <p class="text-2xl font-bold text-slate-800">{{ stats.approvedCases }}</p>
+            <p class="text-xs text-slate-500 mt-0.5">Approved Cases</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+        <a href="/admin/reports" class="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl p-5 flex items-center gap-4 hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-500/20 group">
+          <div class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-sm">View Reports</p>
+            <p class="text-xs text-blue-200 mt-0.5">Analytics &amp; statistics</p>
+          </div>
+        </a>
+        <a href="/admin/users" class="bg-white border border-slate-200 rounded-2xl p-5 flex items-center gap-4 hover:shadow-md transition-all group">
+          <div class="w-10 h-10 bg-violet-50 rounded-xl flex items-center justify-center group-hover:bg-violet-100 transition">
+            <svg class="w-5 h-5 text-violet-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-sm text-slate-800">Manage Users</p>
+            <p class="text-xs text-slate-400 mt-0.5">View all accounts</p>
+          </div>
+        </a>
+        <a href="/admin/cases" class="bg-white border border-slate-200 rounded-2xl p-5 flex items-center gap-4 hover:shadow-md transition-all group">
+          <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center group-hover:bg-amber-100 transition">
+            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+          </div>
+          <div>
+            <p class="font-semibold text-sm text-slate-800">All Cases</p>
+            <p class="text-xs text-slate-400 mt-0.5">Review applications</p>
+          </div>
+        </a>
+      </div>
+
+      <!-- Recent Users -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm">
+        <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h3 class="font-semibold text-slate-800">Recent Registrations</h3>
+          <a href="/admin/users" class="text-xs text-blue-600 hover:underline font-medium">View all →</a>
+        </div>
+        {{#if recentUsers.length}}
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead><tr class="text-xs text-slate-400 uppercase border-b border-slate-100">
+              <th class="px-6 py-3 text-left font-medium">Name</th>
+              <th class="px-6 py-3 text-left font-medium">Email</th>
+              <th class="px-6 py-3 text-left font-medium">Role</th>
+              <th class="px-6 py-3 text-left font-medium">Joined</th>
+            </tr></thead>
+            <tbody class="divide-y divide-slate-50">
+              {{#each recentUsers}}
+              <tr class="hover:bg-slate-50/70 transition">
+                <td class="px-6 py-3.5 font-medium text-slate-800">{{ this.fullName }}</td>
+                <td class="px-6 py-3.5 text-slate-500">{{ this.email }}</td>
+                <td class="px-6 py-3.5">
+                  {{#if (eq this.role "admin")}}<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-100">Admin</span>
+                  {{else if (eq this.role "staff")}}<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-100">Staff</span>
+                  {{else}}<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-100">Citizen</span>{{/if}}
+                </td>
+                <td class="px-6 py-3.5 text-slate-400 text-xs">{{ this.createdAtFormatted }}</td>
+              </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        </div>
+        {{else}}
+        <div class="py-12 text-center text-slate-400">
+          <svg class="w-10 h-10 mx-auto mb-3 text-slate-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0"/></svg>
+          <p class="text-sm">No users yet.</p>
+        </div>
+        {{/if}}
+      </div>
+
+      {{/if}}
+
+      <!-- ── STAFF VIEW ─────────────────────────────────────── -->
+      {{#if (eq user.role "staff")}}
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+          </div>
+          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Open Cases</p></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">For Review</p></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Resolved</p></div>
+        </div>
+      </div>
+      {{/if}}
+
+      <!-- ── CITIZEN VIEW ───────────────────────────────────── -->
+      {{#if (eq user.role "citizen")}}
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Submitted</p></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-amber-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Pending Review</p></div>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-50 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div><p class="text-2xl font-bold text-slate-800">0</p><p class="text-xs text-slate-500">Approved</p></div>
+        </div>
+      </div>
+      {{/if}}
+
+    </div>
+  </main>
+</div>
+
+<script>
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-PH', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+</script>
+{{> footer}}
